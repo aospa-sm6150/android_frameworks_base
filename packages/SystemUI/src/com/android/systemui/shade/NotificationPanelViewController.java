@@ -105,8 +105,6 @@ import com.android.internal.policy.ScreenDecorationsUtils;
 import com.android.internal.policy.SystemBarUtils;
 import com.android.internal.util.LatencyTracker;
 import com.android.keyguard.ActiveUnlockConfig;
-import com.android.keyguard.EmergencyButton;
-import com.android.keyguard.EmergencyButtonController;
 import com.android.keyguard.FaceAuthApiRequestReason;
 import com.android.keyguard.KeyguardClockSwitch.ClockSize;
 import com.android.keyguard.KeyguardStatusView;
@@ -372,9 +370,6 @@ public final class NotificationPanelViewController extends PanelViewController {
     private float mQuickQsHeaderHeight;
     private final ScreenOffAnimationController mScreenOffAnimationController;
     private final UnlockedScreenOffAnimationController mUnlockedScreenOffAnimationController;
-
-    private final EmergencyButtonController.Factory mEmergencyButtonControllerFactory;
-    private EmergencyButtonController mEmergencyButtonController;
 
     private int mQsTrackingPointer;
     private VelocityTracker mQsVelocityTracker;
@@ -788,7 +783,6 @@ public final class NotificationPanelViewController extends PanelViewController {
             UnlockedScreenOffAnimationController unlockedScreenOffAnimationController,
             ShadeTransitionController shadeTransitionController,
             SystemClock systemClock,
-            EmergencyButtonController.Factory emergencyButtonControllerFactory,
             CameraGestureHelper cameraGestureHelper,
             KeyguardBottomAreaViewModel keyguardBottomAreaViewModel,
             KeyguardBottomAreaInteractor keyguardBottomAreaInteractor) {
@@ -831,7 +825,6 @@ public final class NotificationPanelViewController extends PanelViewController {
         mContentResolver = contentResolver;
         mKeyguardQsUserSwitchComponentFactory = keyguardQsUserSwitchComponentFactory;
         mKeyguardUserSwitcherComponentFactory = keyguardUserSwitcherComponentFactory;
-        mEmergencyButtonControllerFactory = emergencyButtonControllerFactory;
         mFragmentService = fragmentService;
         mSettingsChangeObserver = new SettingsChangeObserver(handler);
         mSplitShadeEnabled =
@@ -1324,10 +1317,6 @@ public final class NotificationPanelViewController extends PanelViewController {
     }
 
     private void initBottomArea() {
-        EmergencyButton emergencyButton =
-                mKeyguardBottomArea.findViewById(R.id.emergency_call_button);
-        mEmergencyButtonController = mEmergencyButtonControllerFactory.create(emergencyButton);
-        mEmergencyButtonController.init();
         mKeyguardBottomArea.init(mKeyguardBottomAreaViewModel, mFalsingManager);
     }
 
